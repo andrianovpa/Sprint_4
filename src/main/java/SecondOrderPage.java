@@ -63,6 +63,7 @@ public class SecondOrderPage {
     public void descriptionFieldResult() {
         Assert.assertTrue(driver.findElement(resultHeader).getText().contains("Заказ оформлен"));
     }
+    //Метод для ожидания прогрузки заголовка
     public void waitResultHeader(){
         new WebDriverWait(driver, 5).until(driver -> (driver.findElement(resultHeader)).getText() != null
                 && !driver.findElement(resultHeader).getText().isEmpty());

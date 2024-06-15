@@ -10,13 +10,15 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 @RunWith(Parameterized.class)
 public class TestPositiveSceneryTopButton {
+    private final int buttonOrder;
     private final String name;
     private final String family;
     private final String address;
     private final String telephone;
     private final String date;
     private final String comment;
-    public TestPositiveSceneryTopButton (String name, String family, String address, String telephone, String date, String comment) {
+    public TestPositiveSceneryTopButton (int buttonOrder, String name, String family, String address, String telephone, String date, String comment) {
+        this.buttonOrder = buttonOrder;
         this.name = name;
         this.family = family;
         this.address = address;
@@ -28,23 +30,25 @@ public class TestPositiveSceneryTopButton {
     @Before
     public void startUp() {
         WebDriverManager.chromedriver().setup();
-
+        driver = new ChromeDriver();
+        driver.get("https://qa-scooter.praktikum-services.ru/");
     }
 
     private WebDriver driver;
     @Parameterized.Parameters
     public  static  Object[][] getCredentials() {
         return new Object[][] {
-                {"Павел", "Андрианов", "Авиамоторная 17","+79999999999", "12.06.2024", "Код от домофона 179*235"},
-                {"Екатерина", "Васильева", "Московский бульвар", "+79998887744", "13.06.2024", ""}
+                {2, "Павел", "Андрианов", "Авиамоторная 17","+79999999999", "12.06.2024", "Код от домофона 179*235"},
+                {5, "Екатерина", "Васильева", "Московский бульвар", "+79998887744", "13.06.2024", ""}
         };
     }
     @Test
     public void checkAllFlowPositiveCase() {
-        driver = new ChromeDriver();
-        driver.get("https://qa-scooter.praktikum-services.ru/");
+
         MainPageQaScooter objMainPageQaScooter = new MainPageQaScooter(driver);
-        objMainPageQaScooter.clickFirstButtonOrder();
+        objMainPageQaScooter.scrollToElementButton(buttonOrder);
+        objMainPageQaScooter.waitButtonOrder(buttonOrder);
+        objMainPageQaScooter.clickButtonOrder(buttonOrder);
         FirstOrderPage objFirstOrderPage = new FirstOrderPage(driver);
         objFirstOrderPage.setNameField(name);
         objFirstOrderPage.setFamilyNameField(family);

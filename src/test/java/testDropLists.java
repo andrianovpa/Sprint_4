@@ -13,10 +13,10 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(Parameterized.class)
 public class testDropLists {
-    private final String locationField;
-    private final String hiddenFaqField;
+    private final int locationField;
+    private final int hiddenFaqField;
     private final String resultText;
-    public testDropLists(String locationField, String hiddenFaqField, String resultText) {
+    public testDropLists(int locationField, int hiddenFaqField, String resultText) {
         this.locationField = locationField;
         this.hiddenFaqField = hiddenFaqField;
         this.resultText = resultText;
@@ -24,6 +24,8 @@ public class testDropLists {
     @Before
     public void startUp() {
         WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+        driver.get("https://qa-scooter.praktikum-services.ru/");
 
     }
 
@@ -32,23 +34,21 @@ public class testDropLists {
    @Parameterized.Parameters
    public static Object[][] getCredentials() {
        return new Object[][] {
-               {"accordion__heading-0", ".//div[@id = 'accordion__panel-0']/p", "Сутки — 400 рублей. Оплата курьеру — наличными или картой."},
-               {"accordion__heading-1", ".//div[@id = 'accordion__panel-1']/p", "Пока что у нас так: один заказ — один самокат. Если хотите покататься с друзьями, можете просто сделать несколько заказов — один за другим."},
-               {"accordion__heading-2", ".//div[@id = 'accordion__panel-2']/p", "Допустим, вы оформляете заказ на 8 мая. Мы привозим самокат 8 мая в течение дня. Отсчёт времени аренды начинается с момента, когда вы оплатите заказ курьеру. Если мы привезли самокат 8 мая в 20:30, суточная аренда закончится 9 мая в 20:30."},
-               {"accordion__heading-3", ".//div[@id = 'accordion__panel-3']/p", "Только начиная с завтрашнего дня. Но скоро станем расторопнее."},
-               {"accordion__heading-4", ".//div[@id = 'accordion__panel-4']/p", "Пока что нет! Но если что-то срочное — всегда можно позвонить в поддержку по красивому номеру 1010."},
-               {"accordion__heading-5", ".//div[@id = 'accordion__panel-5']/p", "Самокат приезжает к вам с полной зарядкой. Этого хватает на восемь суток — даже если будете кататься без передышек и во сне. Зарядка не понадобится."},
-               {"accordion__heading-6", ".//div[@id = 'accordion__panel-6']/p", "Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои."},
-               {"accordion__heading-7", ".//div[@id = 'accordion__panel-7']/p", "Да, обязательно. Всем самокатов! И Москве, и Московской области."}
+               {1, 0, "Сутки — 400 рублей. Оплата курьеру — наличными или картой."},
+               {2, 1, "Пока что у нас так: один заказ — один самокат. Если хотите покататься с друзьями, можете просто сделать несколько заказов — один за другим."},
+               {3, 2, "Допустим, вы оформляете заказ на 8 мая. Мы привозим самокат 8 мая в течение дня. Отсчёт времени аренды начинается с момента, когда вы оплатите заказ курьеру. Если мы привезли самокат 8 мая в 20:30, суточная аренда закончится 9 мая в 20:30."},
+               {4, 3, "Только начиная с завтрашнего дня. Но скоро станем расторопнее."},
+               {5, 4, "Пока что нет! Но если что-то срочное — всегда можно позвонить в поддержку по красивому номеру 1010."},
+               {6, 5, "Самокат приезжает к вам с полной зарядкой. Этого хватает на восемь суток — даже если будете кататься без передышек и во сне. Зарядка не понадобится."},
+               {7, 6, "Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои."},
+               {8, 7, "Да, обязательно. Всем самокатов! И Москве, и Московской области."}
 
        };
    }
     @Test
    public void checkFirstPointDropList() {
-       driver = new ChromeDriver();
-       driver.get("https://qa-scooter.praktikum-services.ru/");
        MainPageQaScooter objMainPageQaScooter = new MainPageQaScooter(driver);
-       objMainPageQaScooter.scrollToElement(locationField);
+       objMainPageQaScooter.scrollToElementQuest(locationField);
        objMainPageQaScooter.clickFaqElement(locationField);
        objMainPageQaScooter.waitDropText(hiddenFaqField);
        objMainPageQaScooter.testFaqField(hiddenFaqField, resultText);

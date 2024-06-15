@@ -9,15 +9,15 @@ public class TestLogoSamokat {
     @Before
     public void startUp() {
         WebDriverManager.chromedriver().setup();
-
+        driver = new ChromeDriver();
+        driver.get("https://qa-scooter.praktikum-services.ru/");
     }
 
     private WebDriver driver;
 
     @Test
     public void checkFirstPointDropList() {
-        driver = new ChromeDriver();
-        driver.get("https://qa-scooter.praktikum-services.ru/");
+
         MainPageQaScooter objMainPageQaScooter = new MainPageQaScooter(driver);
         objMainPageQaScooter.clickLogoSamokat();
         objMainPageQaScooter.currenUrl();
